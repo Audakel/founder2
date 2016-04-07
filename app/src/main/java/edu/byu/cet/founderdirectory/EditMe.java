@@ -102,7 +102,7 @@ public class EditMe extends AppCompatActivity {
 
 
     private int updateFounder(){
-        String whateverIdIam = "4";
+        String whateverIdIam = "6";
 
         ContentValues contentValues  = new ContentValues();
         for (Map.Entry<EditText, String> i : editFields.entrySet()){
@@ -112,6 +112,7 @@ public class EditMe extends AppCompatActivity {
         }
 
         contentValues.put(FounderProvider.Contract.DIRTY, FounderProvider.Contract.FLAG_DIRTY);
+//        contentValues.put(FounderProvider.Contract.PREFERRED_FULL_NAME, PREFERRED_FULL_NAME);
 
         int updateResponse = getApplicationContext().getContentResolver().update(FounderProvider.Contract.CONTENT_URI, contentValues,
                 "_id = " + whateverIdIam , null);

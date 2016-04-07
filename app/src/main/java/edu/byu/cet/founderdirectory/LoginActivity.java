@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Key for device ID shared preference.
      */
     private static final String DEVICE_ID_KEY = "deviceId";
+    private static final String USER_ID_KEY = "userId";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -363,6 +364,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 JSONObject resultObject = new JSONObject(result);
                 String sessionKey = resultObject.getString("sessionId");
+                String userId = resultObject.getString("userId");
+                Log.d(TAG, "doInBackground: userId" + userId);
 
                 if (sessionKey != null && sessionKey.length() > 0) {
                     mSessionKey = sessionKey;
@@ -371,6 +374,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     SharedPreferences.Editor editor = prefs.edit();
 
                     editor.putString(SESSION_ID_KEY, sessionKey);
+                    editor.putString(USER_ID_KEY, userId);
                     editor.commit();
 
                     return true;
