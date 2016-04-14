@@ -1,9 +1,11 @@
 package edu.byu.cet.founderdirectory;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -85,28 +88,6 @@ public class DetailFragment extends Fragment {
             }
 
 
-//            TEst full text search
-//            Cursor cursor = db.rawQuery("SELECT * FROM fts_table WHERE fts_table MATCH ?", selectionArgs);
-            String[] selectionArgs = { "zed" };
-//            mCursor = getActivity().getContentResolver().query(FounderProvider.Contract.CONTENT_FTS_URI, null,
-//                    "fts_table MATCH ?", selectionArgs, null);
-
-//            if (mCursor.moveToFirst()) {
-//                String name = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.PREFERRED_FULL_NAME));
-//                String id = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract._ID));
-//                Log.d(TAG, "Sucecss! " + name + " (" + id + ")");
-//
-//                Activity activity = this.getActivity();
-//                CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-//                if (appBarLayout != null) {
-//                    appBarLayout.setTitle(mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.PREFERRED_FIRST_NAME)));
-////                    BitmapWorkerTask.loadBitmapForFragment(getContext(), imageUrl, mPhoto);
-//                    Bitmap founderImage = (PhotoManager.getSharedPhotoManager(getContext())).getPhotoForFounderId(Integer.parseInt(id));
-//                    BitmapDrawable ob = new BitmapDrawable(getResources(), founderImage);
-//                    appBarLayout.setBackground(ob);
-//                }
-//
-//            }
         }
     }
 
@@ -119,7 +100,7 @@ public class DetailFragment extends Fragment {
 //        if (mCursor != null) {
         if (mCursor.moveToFirst()) {
             String name = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.PREFERRED_FULL_NAME));
-            String email = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.EMAIL));
+            final String email = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.EMAIL));
             String cell = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.CELL));
             String linkedIn = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.LINKED_IN));
             String status = mCursor.getString(mCursor.getColumnIndexOrThrow(FounderProvider.Contract.STATUS));
@@ -136,20 +117,31 @@ public class DetailFragment extends Fragment {
 
 
             ((TextView) rootView.findViewById(R.id.founder_detail)).setText((name.equals("") ? "missing" : name));
-            ((TextView) rootView.findViewById(R.id.contact_email)).setText((email.equals("")? "missing" : email));
-            ((TextView) rootView.findViewById(R.id.contact_cell)).setText((cell.equals("")? "missing" : cell));
-            ((TextView) rootView.findViewById(R.id.contact_linkedIn)).setText((linkedIn.equals("")? "missing" : linkedIn));
-            ((TextView) rootView.findViewById(R.id.contact_status)).setText((status.equals("")? "missing" : status));
-            ((TextView) rootView.findViewById(R.id.contact_years)).setText((years.equals("")? "missing" : years));
-            ((TextView) rootView.findViewById(R.id.contact_title)).setText((title.equals("")? "missing" : title));
-            ((TextView) rootView.findViewById(R.id.contact_website)).setText((website.equals("")? "missing" : website));
-            ((TextView) rootView.findViewById(R.id.contact_expertise)).setText((expertise.equals("")? "missing" : expertise));
-            ((TextView) rootView.findViewById(R.id.contact_bio)).setText((bio.equals("")? "missing" : bio));
-            ((TextView) rootView.findViewById(R.id.contact_spouse_name)).setText((spouseName.equals("")? "missing" : spouseName));
-            ((TextView) rootView.findViewById(R.id.contact_spouse_email)).setText((spouseEmail.equals("")? "missing" : spouseEmail));
-            ((TextView) rootView.findViewById(R.id.contact_spouse_cell)).setText((spouseCell.equals("")? "missing" : spouseCell));
-            ((TextView) rootView.findViewById(R.id.contact_home_address)).setText((homeAddress.equals("")? "missing" : homeAddress));
-            ((TextView) rootView.findViewById(R.id.contact_work_address)).setText((workAddress.equals("")? "missing" : workAddress));
+            ((TextView) rootView.findViewById(R.id.contact_email)).setText((email.equals("") ? "missing" : email));
+            ((TextView) rootView.findViewById(R.id.contact_cell)).setText((cell.equals("") ? "missing" : cell));
+            ((TextView) rootView.findViewById(R.id.contact_linkedIn)).setText((linkedIn.equals("") ? "missing" : linkedIn));
+            ((TextView) rootView.findViewById(R.id.contact_status)).setText((status.equals("") ? "missing" : status));
+            ((TextView) rootView.findViewById(R.id.contact_years)).setText((years.equals("") ? "missing" : years));
+            ((TextView) rootView.findViewById(R.id.contact_title)).setText((title.equals("") ? "missing" : title));
+            ((TextView) rootView.findViewById(R.id.contact_website)).setText((website.equals("") ? "missing" : website));
+            ((TextView) rootView.findViewById(R.id.contact_expertise)).setText((expertise.equals("") ? "missing" : expertise));
+            ((TextView) rootView.findViewById(R.id.contact_bio)).setText((bio.equals("") ? "missing" : bio));
+            ((TextView) rootView.findViewById(R.id.contact_spouse_name)).setText((spouseName.equals("") ? "missing" : spouseName));
+            ((TextView) rootView.findViewById(R.id.contact_spouse_email)).setText((spouseEmail.equals("") ? "missing" : spouseEmail));
+            ((TextView) rootView.findViewById(R.id.contact_spouse_cell)).setText((spouseCell.equals("") ? "missing" : spouseCell));
+            ((TextView) rootView.findViewById(R.id.contact_home_address)).setText((homeAddress.equals("") ? "missing" : homeAddress));
+            ((TextView) rootView.findViewById(R.id.contact_work_address)).setText((workAddress.equals("") ? "missing" : workAddress));
+
+
+            ((LinearLayout) rootView.findViewById(R.id.contactEmailButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Founders");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Hey man!");
+                    startActivity(Intent.createChooser(emailIntent, "Chooser Title"));
+                }
+            });
 
         }
 

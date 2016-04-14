@@ -1,6 +1,7 @@
 package edu.byu.cet.founderdirectory;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +20,6 @@ import edu.byu.cet.founderdirectory.provider.FounderProvider;
  * An activity representing a single Founder detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link ListActivity}.
  */
 public class DetailActivity extends AppCompatActivity {
 
@@ -34,8 +34,11 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.setType("vnd.android-dir/mms-sms");
+                smsIntent.putExtra("address", "801-654-7124");
+                smsIntent.putExtra("sms_body", "Hey man! What's up?");
+                startActivity(smsIntent);
             }
         });
 

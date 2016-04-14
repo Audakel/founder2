@@ -82,23 +82,20 @@ public class FounderListActivity extends AppCompatActivity implements LoaderMana
         setupRecyclerView(mRecyclerView);
 
         if (findViewById(R.id.founder_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        View header = (View)getLayoutInflater().inflate(R.layout.list_header, null);
+        mDrawerList.addHeaderView(header);
 
-        // Set the adapter for the list view
+
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mPlanetTitles));
         // Set the list's click listener
 //        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
